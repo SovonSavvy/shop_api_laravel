@@ -13,10 +13,21 @@ class CreateReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('reviews')){
+            Schema::create('reviews', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('product_id')->unsigned()->nullable();
+                $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+                $table->string('customer');
+                $table->text('review');
+                $table->integer('star');
+                $table->timestamps();
+            });
+
+            // Schema::table('reviews', function($table) {
+                
+            // });
+        }
     }
 
     /**
